@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-// import Fizz from './Fizz/Fizz';
 
 class App extends Component {
   state = {
     inputValue: '',
-    finalList: ''
+    finalList: '',
+    position: ''
   }
 
   inputChangeHandler = (event) => {
     let val = event.target.value;
     if (val < 0 && val > 100) {
-      console.log(val);
       alert('Enter value betwee 0 To 1000');
     }
     this.setState(() => {
@@ -19,19 +18,35 @@ class App extends Component {
     })
   }
 
-  calculateHandler = () => {
-    const input = parseInt(this.state.inputValue);
+  increment(){
+    var position = this.state.inputValue
+    if (position < 100){
+      this.setState({position: this.state.inputValue + 20})
+    }
+  }
+  
+  decrement(){
+    var position = this.state.inputValue
+    if (position > 1){
+      this.setState({position:this.state.inputValue - 20})
+    }
+  }
+  
+ calculateHandler = () => {
+    const input = this.state.inputValue;
     let list = [];
     if (input) {
       let i;
-      for (i = 0; i <= input; i++) {
+      for (i = 1; i <= input; i++) {
+        if (i % 3 === 0 && i % 5 === 0) {
+          list.push('fizz buzz');
+          continue;
+        }
         if (i % 3 === 0) {
           list.push('fizz');
-          // console.log('Fizz');
           continue;
         } else if (i % 5 === 0) {
           list.push('Buzz');
-          // console.log('Buzz');
           continue;
         }
         list.push(i);
@@ -43,41 +58,31 @@ class App extends Component {
 
   render() {
 
+    let totalList = ''
+
     if (this.state.finalList) {
-      
+      totalList = this.state.finalList.map(list => {
+        return (
+          <li>{list}</li>
+        )
+      })
     }
 
 
     return (
       <div className="section">
-        INPUT <input onChange={this.inputChangeHandler} className="input" type="text" />
+        <input onChange={this.inputChangeHandler} className="input" type="text" />
         <input type="submit" value="Submit" onClick={this.calculateHandler} />
         <br />
         <br />
-        <a className="btn" href="#">PREV</a>
-        <input className="inputField" type="text" />
+        <button onClick={this.decrement.bind(this)} id="dec">Prev</button>
+        <button onClick={this.increment.bind(this)} id="inc">Next</button>
         <ul>
-        {this.state.finalList ? (
-          console.log('kdkdkdkdk' + this.state.finalList)
-        ) : null}
+          {totalList}
         </ul>
-        <a className="btn" href="#">NEXT</a>
       </div>
     );
   }
 }
 
 export default App;
-
-
-
-// <div className="App">
-      //   <Fizz
-      //     clicked={this.inputChangeHandler}
-      //     value={this.state.inputValue} />
-      // </div>
-
-      // else if (i % 3 === 0 && i % 5 === 0) {
-      //     console.log('Buzz');
-      //     continue;
-      //   }
